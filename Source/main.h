@@ -28,14 +28,18 @@ __published:	// IDE-managed Components
     TMenuItem *mmuHowPlay;
     TImage *imgPlayer1;
     TImage *imgPlayer2;
-    TImageList *ilList;
     TStaticText *txtPlayer_1;
     TStaticText *txtPlayer_2;
+    TStaticText *txtStart;
+	
     void __fastcall mmuAboutClick(TObject *Sender);
     void __fastcall mmuPlayer12Click(TObject *Sender);
     void __fastcall mmuHowPlayClick(TObject *Sender);
     void __fastcall FormKeyPress(TObject *Sender, char &Key);
+    void __fastcall mmuNewPlayComputerClick(TObject *Sender);
+	
 private:	// User declarations
+	int __fastcall PlayerResult(int py1,int py2);
 public:		// User declarations
     __fastcall TfrmMain(TComponent* Owner);
 };
