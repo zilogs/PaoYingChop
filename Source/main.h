@@ -40,6 +40,18 @@ __published:	// IDE-managed Components
 	
 private:	// User declarations
 	int __fastcall PlayerResult(int py1,int py2);
+
+private:	
+    void __fastcall PlaySoundEx( const char * wav_file );
+	void __fastcall PlaySoundStop(void );
+
+	void __fastcall PlaySoundBell(void );
+	void __fastcall PlaySoundClick(void );
+
+//	void __fastcall PlaySoundEqual(void );
+//	void __fastcall PlaySoundLose(void );
+//	void __fastcall PlaySoundWin(void );
+
 public:		// User declarations
     __fastcall TfrmMain(TComponent* Owner);
 };

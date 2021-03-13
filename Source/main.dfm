@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 217
-  Top = 133
+  Left = 231
+  Top = 143
   Width = 623
   Height = 483
   BorderIcons = [biSystemMenu]
