@@ -17,27 +17,6 @@ const char picture_rock[]     = "Picture\\Rock.jpg";
 const char picture_scissors[] = "Picture\\Scissors.jpg";
 const char picture_paper[]    = "Picture\\Paper.jpg";
 
-    // https://people.duke.edu/~ng46/borland/sound.htm
-    void __fastcall TfrmMain::PlaySoundEx( const char * wav_file )
-    {
-        PlaySound ( wav_file , NULL , SND_ASYNC );
-    }
-
-    void __fastcall TfrmMain::PlaySoundStop(void )
-    {
-        PlaySound ( NULL , NULL , SND_ASYNC );
-    }
-
-    void __fastcall TfrmMain::PlaySoundClick(void )
-    {
-        PlaySoundEx ( "Sound\\Click.wav" );
-    }
-
-    void __fastcall TfrmMain::PlaySoundBell(void )
-    {
-        PlaySoundEx ( "Sound\\Bell.wav" );
-    }
-
 //---------------------------------------------------------------------------
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     : TForm(Owner)
@@ -53,13 +32,27 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 void __fastcall TfrmMain::mmuAboutClick(TObject *Sender)
 {
     PlaySoundClick();
+    Sleep(200);
     Application->MessageBox(
         "โปรแกรมโดย\n\r"
          "\tนางสาว กัญญณัฐ\tแสนแก้ว\n\r" \
          "\tนางสาว วรกมล\tบุญมี\n\r" \
          "\tนาย วงศธร\t\tวรรณชัย\n\r",
         "เป่า ยิ้ง ฉุบ (Pao Ying Chup)",
-        MB_OK + MB_ICONINFORMATION);
+        MB_OK ); // | MB_ICONINFORMATION);
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TfrmMain::mmuHowPlayClick(TObject *Sender)
+{
+    PlaySoundClick();
+    Application->MessageBox(
+        "ผู้เล่นคนที่ 1\n\rกด 'Q' เพื่อออก ค้อน\n\rกด  'A' เพื่อออก กรรไกร\n\rกด 'Z' เพื่อออก กระดาษ\n\r\n\r"
+        "ผู้เล่นคนที่ 2 \n\rกด '9' เพื่อออก ค้อน\n\rกด  '6' เพื่อออก กรรไกร\n\rกด '3' เพื่อออก กระดาษ\n\r"
+        , "วิธีการเล่น" ,
+        MB_OK ); // | MB_ICONINFORMATION);
+
+    return;
 }
 
 //---------------------------------------------------------------------------
@@ -101,15 +94,19 @@ void __fastcall TfrmMain::mmuPlayer12Click(TObject *Sender)
     AnsiString number;
 
     PlaySoundClick();
-    Player1 = InputBox("ผู้เล่นคนที่ 1","กรุณากรอกชื่อของคุณ ?",Player1);
+    if ( InputQuery ("ผู้เล่นคนที่ 1","กรุณากรอกชื่อของคุณ ?", Player1) == false )
+        return;
     txtPlayer1->Caption = Player1;
     txtPlayer_1->Caption = Player1;
     PlaySoundClick();
-    Player2 = InputBox("ผู้เล่นคนที่ 2","กรุณากรอกชื่อของคุณ ?",Player2);
+    if ( InputQuery ("ผู้เล่นคนที่ 2","กรุณากรอกชื่อของคุณ ?", Player2) == false )
+        return;
     txtPlayer2->Caption = Player2;
     txtPlayer_2->Caption = Player2;
     PlaySoundClick();
-    number = InputBox("คำถาม","จำนวนเกม  ?",round_game);
+    number = IntToStr( round_game );
+    if ( InputQuery ("คำถาม","จำนวนเกม  ?", number ) == false )
+        return;
     round_game = number.ToInt();
     txtGameCount->Caption = round_game;
 
@@ -128,7 +125,8 @@ void __fastcall TfrmMain::mmuNewPlayComputerClick(TObject *Sender)
     AnsiString number;
 
     PlaySoundClick();
-    Player1 = InputBox("ชื่อผู้เล่น","กรุณากรอกชื่อของคุณ ?",Player1);
+    if ( InputQuery("ชื่อผู้เล่น","กรุณากรอกชื่อของคุณ ?",Player1) == False )
+        return;
     txtPlayer1->Caption = Player1;
     txtPlayer_1->Caption = Player1;
     Player2 = "Computer";
@@ -136,7 +134,9 @@ void __fastcall TfrmMain::mmuNewPlayComputerClick(TObject *Sender)
     txtPlayer_2->Caption = Player2;
 
     PlaySoundClick();
-    number = InputBox("คำถาม","จำนวนเกม  ?",round_game);
+    number = IntToStr( round_game );
+    if ( InputQuery("คำถาม","จำนวนเกม  ?",number) == false )
+        return;
     round_game = number.ToInt();
     txtGameCount->Caption = round_game;
     state = STANDBY_COMP;
@@ -146,18 +146,6 @@ void __fastcall TfrmMain::mmuNewPlayComputerClick(TObject *Sender)
     count_of_round = 1;
     txtGameCount->Caption = count_of_round;
     txtStart->Visible = true;
-    return;
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmMain::mmuHowPlayClick(TObject *Sender)
-{
-    PlaySoundClick();
-    Application->MessageBox(
-        "ผู้เล่นคนที่ 1\n\rกด 'Q' เพื่อออก ค้อน\n\rกด  'A' เพื่อออก กรรไกร\n\rกด 'Z' เพื่อออก กระดาษ\n\r\n\r"
-        "ผู้เล่นคนที่ 2 \n\rกด '9' เพื่อออก ค้อน\n\rกด  '6' เพื่อออก กรรไกร\n\rกด '3' เพื่อออก กระดาษ\n\r"
-        , "วิธีการเล่น" ,
-        MB_OK + MB_ICONINFORMATION);
-
     return;
 }
 
@@ -187,20 +175,17 @@ void __fastcall TfrmMain::mmuHowPlayClick(TObject *Sender)
 
             txtStart->Visible = false;
             if ( Player1_score == Player2_score ) {
-                PlaySoundEx("Sound\\Equal.wav");
-                Application->MessageBox( "เสมอกัน" , "สรุป" ,
-                    MB_OK + MB_ICONINFORMATION );
+                PlaySoundEx("Sound\\Tied.wav");
+                Application->MessageBox( "เสมอกัน" , "สรุป" , MB_OK );
             } else {
                 if ( Player1_score > Player2_score ) {
                     PlaySoundEx("Sound\\Win.wav");
                     ans = Player1 + " ชนะ.";
-                    Application->MessageBox( ans.c_str() , "สรุป",
-                        MB_OK + MB_ICONINFORMATION );
+                    Application->MessageBox( ans.c_str() , "สรุป", MB_OK );
                 } else {
                     PlaySoundEx("Sound\\Lose.wav");
                     ans = Player2 + " ชนะ.";
-                    Application->MessageBox( ans.c_str() , "สรุป",
-                        MB_OK + MB_ICONINFORMATION );
+                    Application->MessageBox( ans.c_str() , "สรุป", MB_OK ); 
                 }
             }
 
